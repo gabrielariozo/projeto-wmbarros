@@ -1,13 +1,9 @@
 <?php
 
 require_once dirname(__DIR__, 2) . '/Resource/dataview/gerenciar_equipamento-dataview.php';
-$teste = '';
-
-if(isset($_POST['teste_botao']))
-$teste = $_POST['teste_botao'];
-echo $teste;
 
 ?>
+
 <!DOCTYPE html>
 <html>
 
@@ -32,7 +28,7 @@ echo $teste;
                     <div class="row mb-2">
                         <div class="col-sm-6">
                             <h1><?= $acao ?> Equipamento</h1>
-                            <h3 class="card-title">Aqui você poderá cadastrar seus equipamentos</h3>
+                            <h3 class="card-title">Aqui você poderá <?= $acao ?> seus equipamentos</h3>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
@@ -57,7 +53,7 @@ echo $teste;
 
                                     <option value="">Selecione</option>
                                     <?php foreach ($tipos as $item) { ?>
-                                        <option value="<?= $item['id'] ?>">
+                                        <option value="<?= $item['id'] ?>" <?= !isset($id_equip) ? '' : ($dados[0]['tipo'] == $item['nome'] ? 'selected' : '')?>>
                                             <?= $item['nome'] ?>
                                         </option>
                                     <?php } ?>
@@ -66,18 +62,19 @@ echo $teste;
                                 <label>Modelo</label>
                                 <select class="form-control obg" name="modelo" id="modelo">
 
-                                    <option value="">Selecione</option>
+                                <option value="">Selecione</option>
+
                                     <?php foreach ($modelos as $item) { ?>
-                                        <option value="<?= $item['id'] ?>">
+                                        <option value="<?= $item['id'] ?>" <?= !isset($id_equip) ? '' : ($dados[0]['modelo'] == $item['nome'] ? 'selected' : '')?>>
                                             <?= $item['nome'] ?>
                                         </option>
                                     <?php } ?>
 
                                 </select>
                                 <label>Identificação</label>
-                                <input type="text" class="form-control obg" placeholder="Digite aqui..." name="identificacao" id="identificacao">
+                                <input type="text" class="form-control obg" placeholder="<?= isset($id_equip) ? $dados[0]['identificacao'] : 'Digite aqui...' ?>" name="identificacao" id="identificacao">
                                 <label>Descrição</label> <br>
-                                <textarea style="resize:none;" class="form-control obg" name="descricao_equipamento" id="descricao_equipamento" cols="30" rows="10" placeholder="Digite aqui..."></textarea>
+                                <textarea style="resize:none;" class="form-control obg" name="descricao_equipamento" id="descricao_equipamento" cols="30" rows="10" placeholder="<?= isset($dados) ? $dados[0]['descricao'] : 'Digite aqui...' ?>"></textarea>
                             </div>
                             <button class="btn btn-success" name="btn_cadastrar" onclick="return CadastrarEquipamento('form_cad')"><?= $acao ?></button>
                         </form>

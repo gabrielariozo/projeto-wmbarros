@@ -1,11 +1,5 @@
 <?php
-
-require_once dirname(__DIR__, 3) . '\vendor\autoload.php';
-
-use Src\Controller\EquipamentoCTRL;
-
-$ctrl_equipamento = new EquipamentoCTRL;
-$equipamentos = $ctrl_equipamento->ConsultarEquipamentoCTRL();
+require_once dirname(__DIR__, 2) . '/Resource/dataview/gerenciar_equipamento-dataview.php';
 ?>
 <!DOCTYPE html>
 <html>
@@ -48,14 +42,37 @@ $equipamentos = $ctrl_equipamento->ConsultarEquipamentoCTRL();
                 <div class="card">
                     <div class="card-body">
 
-                        <form action="tipo_equipamento.php" method="post">
-                            <div class="form-group">
-                                <label>Pesquisar por Descrição</label>
-                                <input type="text" class="form-control" placeholder="Digite aqui..." onkeyup="ConsultarEquipamento()" id="nome_pesquisa" name="nome_pesquisa">
+                        <form action="consultar_equipamento.php" method="post">
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label>Filtrar pelo Tipo</label>
+                                    <select class="form-control select2 obg" onchange="ConsultarEquipamento()" name="filtro_tipo" id="filtro_tipo">
+
+                                        <option value="">- SEM FILTRO -</option>
+                                        <?php foreach ($tipos as $item) { ?>
+                                            <option value="<?= $item['nome'] ?>">
+                                                <?= $item['nome'] ?>
+                                            </option>
+                                        <?php } ?>
+
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Filtrar pelo Modelo</label>
+                                    <select class="form-control obg" onchange="ConsultarEquipamento()" name="filtro_modelo" id="filtro_modelo">
+
+                                        <option value="">- SEM FILTRO -</option>
+                                        <?php foreach ($modelos as $item) { ?>
+                                            <option value="<?= $item['nome'] ?>">
+                                                <?= $item['nome'] ?>
+                                            </option>
+                                        <?php } ?>
+
+                                    </select>
+                                </div>
                             </div>
-                            <button class="btn btn-outline-primary" onclick="ConsultarEquipamento()" name="btn_buscar">Buscar</button>
+                            <hr>
                         </form>
-                        <hr>
                     </div>
                     <div class="row">
                         <div class="col-12">
@@ -64,52 +81,28 @@ $equipamentos = $ctrl_equipamento->ConsultarEquipamentoCTRL();
                                     <h3 class="card-title">Equipamentos Cadastrados</h3>
 
                                     <div class="card-tools">
+                                        <div class="input-group input-group-sm" style="width: 150px;">
+                                            <input type="text" onkeyup="ConsultarEquipamento()" id="filtro_id" name="filtro_id" class="form-control float-right" placeholder="Search">
+
+                                            <div class="input-group-append">
+                                                <button type="submit" onclick="ConsultarEquipamento()" class="btn btn-default"><i class="fas fa-search"></i></button>
+                                            </div>
+                                        </div>
                                     </div>
+                                    <!-- /.card-header -->
+                                    <div class="card-body table-responsive p-0" id="tableResult">
+                                        <table class="table table-hover">
+
+                                        </table>
+                                    </div>
+                                    <!-- /.card-body -->
                                 </div>
-                                <!-- /.card-header -->
-                                <div class="card-body table-responsive p-0">
-                                    <table class="table table-hover" id="tableResult">
-                                        <thead>
-                                            <tr>
-                                                <th>Tipo</th>
-                                                <th>Modelo</th>
-                                                <th>Identificação</th>
-                                                <th>Descrição</th>
-                                                <th>Ação</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php foreach ($equipamentos as $item) { ?>
-                                                <tr>
-                                                    <td>
-                                                        <?= $item['tipo'] ?>
-                                                    </td>
-                                                    <td>
-                                                        <?= $item['modelo'] ?>
-                                                    </td>
-                                                    <td>
-                                                        <?= $item['identificacao'] ?>
-                                                    </td>
-                                                    <td>
-                                                        <?= $item['descricao']?>
-                                                    </td>
-                                                    <td>
-                                                        <a href="equipamento.php?id=<?= $item['id'] ?>" class="btn btn-warning btn-xs">Alterar</a>
-                                                        <a href="#" class="btn btn-danger btn-xs">Excluir</a>
-                                                    </td>
-                                                </tr>
-                                                <?php } ?>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <!-- /.card-body -->
+                                <!-- /.card -->
                             </div>
-                            <!-- /.card -->
                         </div>
+                        <!-- /.card-body -->
                     </div>
-                    <!-- /.card-body -->
-                </div>
-                <!-- /.card -->
+                    <!-- /.card -->
 
             </section>
             <!-- /.content -->
@@ -128,6 +121,11 @@ $equipamentos = $ctrl_equipamento->ConsultarEquipamentoCTRL();
     include_once PATH_URL . 'Template/_includes/_scripts.php';
     include_once PATH_URL . 'Template/_includes/_msg.php';
     ?>
+    <script src="../../Resource/ajax/equipamento-ajx.js"></script>
+    <script>
+        ConsultarEquipamento()
+    </script>
+
 </body>
 
 </html>

@@ -69,12 +69,34 @@ class EquipamentoDAO extends Conexao
         }
     }
 
-    public function ConsultarEquipamentoDAO(string $nome = ''): array
+    public function DetalharEquipamentoDAO($id_equip): array
     {
-        $sql = $this->conexao->prepare(GerenciarEquipamentoSQL::CONSULTAR_EQUIPAMENTO($nome));
+        $sql = $this->conexao->prepare(GerenciarEquipamentoSQL::DETALHAR_EQUIPAMENTO());
+        $sql->bindValue(1, $id_equip);
 
-        if (!empty($nome))
-            $sql->bindValue(1, '%' . $nome . '%');
+        $sql->execute();
+        return $sql->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function ConsultarEquipamentoDAO(string $filtro_tipo = '', string $filtro_modelo = '', string $filtro_id = ''): array
+    {
+        $sql = $this->conexao->prepare(GerenciarEquipamentoSQL::CONSULTAR_EQUIPAMENTO($filtro_tipo, $filtro_modelo, $filtro_id));
+
+        $i = 1;
+
+        if (!empty($filtro_tipo) && empty($filtro_modelo) && empty($filtro_id))
+            $sql->bindValue($i++, '%' . $filtro_tipo . '%');
+
+        if (!empty($filtro_modelo) && empty($filtro_tipo) && empty($filtro_id))
+            $sql->bindValue($i++, '%' . $filtro_modelo . '%');
+
+        if (!empty($filtro_id) && empty($filtro_tipo) && empty($filtro_modelo))
+            $sql->bindValue($i++, '%' . $filtro_id . '%');
+
+        if (!empty($filtro_tipo) && !empty($filtro_modelo) && empty($filtro_id)) {
+            $sql->bindValue($i++, '%' . $filtro_tipo . '%');
+            $sql->bindValue($i++, '%' . $filtro_modelo . '%');
+        }
 
         $sql->execute();
         return $sql->fetchAll(\PDO::FETCH_ASSOC);

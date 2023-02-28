@@ -60,7 +60,7 @@ function AlterarTipoEquipamento(id_form) {
                     ConsultarTipoEquipamento();
                     LimparCampos(id_form);
                     FecharModal("modal-alterar-tipo");
-                } else if (retorno == 1) {
+                } else if (retorno == -1) {
                     MensagemErro();
                 }
             }

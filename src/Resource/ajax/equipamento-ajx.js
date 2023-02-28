@@ -32,10 +32,12 @@ function CadastrarEquipamento(id_form) {
 function ConsultarEquipamento() {
     $.ajax({
         type: "post",
-        url: BASE_URL("gerenciar_modelo_equipamento-dataview"),
+        url: BASE_URL("gerenciar_equipamento-dataview"),
         data: {
             consultar_ajx: 'ajx',
-            nome_pesquisa: $("#nome_pesquisa").val()
+            filtro_tipo: $("#filtro_tipo").val(),
+            filtro_modelo: $("#filtro_modelo").val(),
+            filtro_id: $("#filtro_id").val()
         },
         success: function (dados_result) {
             $('#tableResult').html(dados_result);

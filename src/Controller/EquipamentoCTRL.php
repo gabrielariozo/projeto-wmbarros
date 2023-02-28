@@ -45,8 +45,13 @@ class EquipamentoCTRL
         return $this->dao->ExcluirEquipamentoDAO($vo);
     }
 
-    public function ConsultarEquipamentoCTRL(string $nome = '')
+    public function DetalharEquipamentoCTRL($id_equip)
     {
-        return $this->dao->ConsultarEquipamentoDAO($nome);
+        return $this->dao->DetalharEquipamentoDAO($id_equip);
+    }
+
+    public function ConsultarEquipamentoCTRL(string $filtro_tipo = '', string $filtro_modelo = '', string $filtro_id = '')
+    {
+        return $this->dao->ConsultarEquipamentoDAO($filtro_tipo, $filtro_modelo, $filtro_id);
     }
 }
